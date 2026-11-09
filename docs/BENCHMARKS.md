@@ -33,6 +33,14 @@ running on a DRIVE Thor board (Tegra264, compute capability 10.1, ~60 GB
 unified memory). Model `Qwen3.8-27B-TQ_L.gguf` (14.7 GB) +
 `Qwen3.8-27B-DFlash2-TQ3.gguf` drafter, tq3 KV cache, greedy, server timings.
 
+Quantization level of TQ_L (verified by parsing the GGUF tensor table):
+**4.31 bpw overall, i.e. 4-bit class** — the 24.3B-parameter body is TQ4
+(GGUF type 300, 4.125 bpw per [formats](reference/formats.md)), plus
+embedding (4.5 bpw), a few 6.6 bpw tensors and FP16 Gated DeltaNet
+`ssm_alpha`/`ssm_beta` (kept high-precision in the rotated basis). For
+reference: Q4_K_M is ~4.85 bpw, so TQ_L is roughly half a bit denser than
+the common 4-bit GGUF.
+
 200K context (`--context 200000`, prompt 197,913 tokens, 205 output tokens):
 
 | | Prefill tok/s | Decode, no drafter | Decode, DFlash2 drafter |
